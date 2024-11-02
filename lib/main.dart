@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'screens/lista_contatos.dart';
 import 'screens/login.dart';
 
@@ -26,6 +26,7 @@ class AuthCheck extends StatefulWidget {
 }
 
 class _AuthCheckState extends State<AuthCheck> {
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
   bool _isLoggedIn = false;
 
   @override
@@ -35,8 +36,7 @@ class _AuthCheckState extends State<AuthCheck> {
   }
 
   Future<void> _checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('user_token');
+    String? token = await _storage.read(key: 'user_token');
 
     setState(() {
       _isLoggedIn = token != null;
